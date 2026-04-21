@@ -1,0 +1,7 @@
+.git
+.github
+REVIEW.md
+RUNPOD_SETUP.md
+*.md
+__pycache__
+*.pyc

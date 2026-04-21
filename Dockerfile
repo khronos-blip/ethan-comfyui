@@ -6,8 +6,8 @@ ENV PYTHONUNBUFFERED=1
 
 # Install system deps
 RUN apt-get update && apt-get install -y \
-    python3.11 python3-pip python3.11-venv git curl wget htop nano \
-    libgl1 libglib2.0-0 libsm6 libxext6 libxrender-dev sudo \
+    python3.11 python3-pip python3.11-venv git curl wget htop nano sudo \
+    libgl1 libglib2.0-0 libsm6 libxext6 libxrender-dev \
     && rm -rf /var/lib/apt/lists/* \
     && ln -sf /usr/bin/python3.11 /usr/bin/python3
 
@@ -18,11 +18,12 @@ ENV PATH="/opt/venv/bin:$PATH"
 # Upgrade pip
 RUN pip install --upgrade pip
 
-# Install ComfyUI
+# Install ComfyUI (latest stable)
 WORKDIR /workspace
-RUN git clone https://github.com/comfyanonymous/ComfyUI.git ComfyUI_v0123_clean
-WORKDIR /workspace/ComfyUI_v0123_clean
-RUN git checkout v0.0.12.3
+RUN git clone https://github.com/comfyanonymous/ComfyUI.git ComfyUI_clean && \
+    cd ComfyUI_clean && git checkout 2d89b1bf2cf054651c5c8a8302a1a3af53c6e685
+
+WORKDIR /workspace/ComfyUI_clean
 
 # Install all required packages
 RUN pip install -r requirements.txt && \

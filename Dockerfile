@@ -18,10 +18,9 @@ ENV PATH="/opt/venv/bin:$PATH"
 # Upgrade pip
 RUN pip install --upgrade pip
 
-# Install ComfyUI (latest stable)
+# Install ComfyUI (latest)
 WORKDIR /workspace
-RUN git clone https://github.com/comfyanonymous/ComfyUI.git ComfyUI_clean && \
-    cd ComfyUI_clean && git checkout 2d89b1bf2cf054651c5c8a8302a1a3af53c6e685
+RUN git clone https://github.com/comfyanonymous/ComfyUI.git ComfyUI_clean
 
 WORKDIR /workspace/ComfyUI_clean
 

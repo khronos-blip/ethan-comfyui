@@ -18,11 +18,11 @@ ENV PATH="/opt/venv/bin:$PATH"
 # Upgrade pip
 RUN pip install --upgrade pip
 
-# Install ComfyUI (latest)
-WORKDIR /workspace
-RUN git clone https://github.com/comfyanonymous/ComfyUI.git ComfyUI_clean
+# Install ComfyUI (latest) to /opt instead of /workspace (RunPod overrides /workspace)
+WORKDIR /opt
+RUN git clone https://github.com/comfyanonymous/ComfyUI.git ComfyUI
 
-WORKDIR /workspace/ComfyUI_clean
+WORKDIR /opt/ComfyUI
 
 # Install all required packages
 RUN pip install -r requirements.txt && \
@@ -33,11 +33,14 @@ RUN pip install -r requirements.txt && \
 RUN mkdir -p custom_nodes/ComfyUI-GGUF && \
     git clone https://github.com/city96/ComfyUI-GGUF.git custom_nodes/ComfyUI-GGUF
 
+# Add ComfyUI-Manager
+RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git custom_nodes/ComfyUI-Manager
+
 # Copy startup script
-COPY start.sh /workspace/start.sh
-RUN chmod +x /workspace/start.sh
+COPY start.sh /opt/start.sh
+RUN chmod +x /opt/start.sh
 
 EXPOSE 8188
 
 ENV PASSWORD=runpod
-CMD ["/workspace/start.sh"]
+CMD ["/opt/start.sh"]

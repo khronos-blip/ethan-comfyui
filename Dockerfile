@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git curl wget htop nano \
     build-essential \
     libgl1 libglib2.0-0 libsm6 libxext6 libxrender-dev \
+    openssh-server \
     && rm -rf /var/lib/apt/lists/*
 
 # Layer 2: Python venv with 3.11
@@ -55,7 +56,11 @@ RUN pip install --no-cache-dir -r custom_nodes/ComfyUI-Manager/requirements.txt 
 COPY start.sh /opt/start.sh
 RUN chmod +x /opt/start.sh
 
-EXPOSE 8188
+# Health check — ComfyUI responds when ready
+HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \
+    CMD curl -f http://localhost:8188/system_stats || exit 1
+
+EXPOSE 8188 22
 
 ENV PASSWORD=runpod
 CMD ["/opt/start.sh"]

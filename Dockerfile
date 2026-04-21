@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git curl wget htop nano \
     build-essential \
     libgl1 libglib2.0-0 libsm6 libxext6 libxrender-dev \
-    openssh-server \
+    openssh-server ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
 # Layer 2: Python venv with 3.11
@@ -52,7 +52,11 @@ RUN pip install --no-cache-dir -r custom_nodes/ComfyUI-GGUF/requirements.txt
 RUN git clone --depth 1 https://github.com/ltdrdata/ComfyUI-Manager.git custom_nodes/ComfyUI-Manager
 RUN pip install --no-cache-dir -r custom_nodes/ComfyUI-Manager/requirements.txt 2>/dev/null || true
 
-# Layer 10: Startup script
+# Layer 10: Custom nodes — VideoHelperSuite (for Phr00t video pipeline)
+RUN git clone --depth 1 https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git custom_nodes/ComfyUI-VideoHelperSuite
+RUN pip install --no-cache-dir imageio-ffmpeg
+
+# Layer 11: Startup script
 COPY start.sh /opt/start.sh
 RUN chmod +x /opt/start.sh
 

@@ -51,11 +51,7 @@ RUN pip install --no-cache-dir -r custom_nodes/ComfyUI-GGUF/requirements.txt
 RUN git clone --depth 1 https://github.com/ltdrdata/ComfyUI-Manager.git custom_nodes/ComfyUI-Manager
 RUN pip install --no-cache-dir -r custom_nodes/ComfyUI-Manager/requirements.txt 2>/dev/null || true
 
-# Layer 10: Custom nodes — ComfyUI-ZImagePowerNodes (ZSamplerTurbo + EmptyZImageLatentImage)
-RUN git clone --depth 1 https://github.com/martin-rizzo/ComfyUI-ZImagePowerNodes.git custom_nodes/ComfyUI-ZImagePowerNodes
-RUN pip install --no-cache-dir -r custom_nodes/ComfyUI-ZImagePowerNodes/requirements.txt 2>/dev/null || true
-
-# Layer 11: Startup script
+# Layer 10: Startup script
 COPY start.sh /opt/start.sh
 RUN chmod +x /opt/start.sh
 
